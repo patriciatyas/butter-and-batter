@@ -3,7 +3,7 @@
 Patricia Herningtyas (2306152241)
 PBP - A
 
-Need some daily dose of sweetness? [Click Here](http://patricia-herningtyas-butterandbatter.pbp.cs.ui.ac.id/)
+🍰 Need some daily dose of sweetness? [Click Here](http://patricia-herningtyas-butterandbatter.pbp.cs.ui.ac.id/)
 
 ## Cara Pengimplementasian Secara Step-by-Step ##
 
