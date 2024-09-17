@@ -18,6 +18,7 @@ def show_main(request):
 
     return render(request, 'main.html', context)
 
+
 def create_product_entry(request):
     form = ProductEntryForm(request.POST or None)
 
@@ -25,7 +26,11 @@ def create_product_entry(request):
         form.save()
         return redirect('main:show_main')
 
-    context = {'form': form}
+    context = {
+        'form': form,
+        'nama': "Patricia Herningtyas",
+        'kelas': "PBP-A",
+    }
     return render(request, "create_product_entry.html", context)
 
 def show_xml(request):

@@ -11,9 +11,9 @@
     {% extends 'base.html' %}
     {% block content %}
     {% load humanize %}
-    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg mt-6">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg mt-6 mb-4">
         <header class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">{{ tagline }}</h1>
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">🧈{{ tagline }}🧈</h1>
             <p class="text-lg text-gray-600">{{ description }}</p>
         </header>
 
@@ -42,11 +42,6 @@
                 </button>
             </a>
         </div>
-
-        <!-- Footer -->
-        <footer class="text-center mt-8">
-            <p class="text-gray-600">{{ nama }} | {{ kelas }}</p>
-        </footer>
     </div>
     {% endblock content %}
 </body>
