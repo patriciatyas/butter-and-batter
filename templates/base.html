@@ -1,11 +1,29 @@
 {% load static %}
 <!DOCTYPE html>
+
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {% block meta %} {% endblock meta %}
-  </head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        {% block meta %} {% endblock meta %}
+    </head>
+
+    <nav class="border-gray-300 border-b">
+        <div class="max-w-6xl mx-auto py-4 px-6">
+            <div class="flex justify-between">
+                <a href="/" class="flex items-center">
+                    Butter & Batter
+                </a>
+
+                <ul class="flex items-center space-x-4">
+                    <a href="/"><li>Buy Pastries!</li></a>
+                    <a href="/"><li>About</li></a>
+                    <a href="create-product-entry"><li>Add Product Pastry</li></a>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
   <body>
     {% block content %} {% endblock content %}

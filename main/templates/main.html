@@ -7,53 +7,47 @@
     <!-- Tailwind CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 p-4">
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
     {% extends 'base.html' %}
     {% block content %}
     {% load humanize %}
-    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg mt-6">
         <header class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-800">{{ tagline }}</h1>
-            <p class="text-gray-600">{{ description }}</p>
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">{{ tagline }}</h1>
+            <p class="text-lg text-gray-600">{{ description }}</p>
         </header>
 
         <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4">Our Delicious Offerings</h2>
+            <h2 class="text-2xl font-semibold mb-4 border-b-2 border-gray-200 pb-2">Our Delicious Offerings</h2>
         </section>
 
         {% if not product_entries %}
-        <p>Belum ada data pastry pada Butter & Batter.</p>
+        <p class="text-center text-gray-500">Belum ada data pastry pada Butter & Batter.</p>
         {% else %}
-        <table>
-        <tr>
-            <th>Pastry Name</th>
-            <th>Price</th>
-            <th>Description</th>
-        </tr>
-
-        {% comment %} Berikut cara memperlihatkan data product pastry di bawah baris ini 
-        {% endcomment %} 
-        {% for product_entry in product_entries %}
-        <tr>
-            <td>{{product_entry.name}}</td>
-            <td>{{product_entry.price}}</td>
-            <td>{{product_entry.description}}</td>
-        </tr>
-        {% endfor %}
-        </table>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for product_entry in product_entries %}
+            <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ product_entry.name }}</h3>
+                <p class="text-gray-600 mb-2">Price: ${{ product_entry.price|intcomma }}</p>
+                <p class="text-gray-500">{{ product_entry.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
         {% endif %}
 
-        <br />
+        <div class="text-center mt-6">
+            <a href="{% url 'main:create_product_entry' %}">
+                <button class="bg-red-900 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-red-950 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    Add New Product Pastry Entry
+                </button>
+            </a>
+        </div>
 
-        <a href="{% url 'main:create_product_entry' %}">
-        <button>Add New Product Pastry Entry</button>
-        </a>
-        
         <!-- Footer -->
-        <footer class="text-center">
+        <footer class="text-center mt-8">
             <p class="text-gray-600">{{ nama }} | {{ kelas }}</p>
         </footer>
     </div>
-    {% endblock content%}
+    {% endblock content %}
 </body>
 </html>
