@@ -1,33 +1,45 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect 
+from main.forms import ProductEntryForm
+from main.models import ProductEntry
+from django.http import HttpResponse
+from django.core import serializers
 
 def show_main(request):
+    product_entries = ProductEntry.objects.all() # mengambil seuluruh objek dari model ProductEntry yang tersimpan di database
+
+
     context = {
         'nama': "Patricia Herningtyas",
         'kelas': "PBP-A",
         'tagline': "Your Daily Dose of Sweetness",
         'description': "Welcome to Butter & Batter — where every bite is a blissful journey of flavors.",
-        'food_items': [
-            {
-                'name': 'Classic Croissant',
-                'price': "25000",
-                'description': "Flaky, buttery, and oh-so-delicious. Our classic croissant is made with layers of love and pure butter for that perfect golden crisp and a melt-in-your-mouth experience."
-            },
-            {
-                'name': 'Velvet Cupcakes',
-                'price': "30000",
-                'description': "Soft, moist, and velvety smooth, topped with our signature cream cheese frosting. These cupcakes are more than just a treat; they are a celebration in every bite."
-            },
-            {
-                'name': 'Lemon Drizzle Loaf',
-                'price': "25000",
-                'description': "Bright and zesty, with a burst of lemon in every slice, our Lemon Drizzle Loaf is the perfect balance of sweet and tangy. Ideal for sunny afternoons and teatime delights."
-            },
-            {
-                'name': 'Artisan Sourdough Bread',
-                'price': "20000",
-                'description': "Crafted with patience and care, our sourdough bread is naturally fermented for that perfect tangy taste and a satisfying chewy texture. Baked fresh every morning!"
-            },
-        ]
+        'product_entries': product_entries
     }
 
     return render(request, 'main.html', context)
+
+def create_product_entry(request):
+    form = ProductEntryForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return redirect('main:show_main')
+
+    context = {'form': form}
+    return render(request, "create_product_entry.html", context)
+
+def show_xml(request):
+    data = ProductEntry.objects.all()
+    return HttpResponse(serializers.serialize("xml", data), content_type='application/xml')
+
+def show_json(request):
+    data = ProductEntry.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type='application/json')
+
+def show_xml_by_id(request, id):
+    data = ProductEntry.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+def show_json_by_id(request, id):
+    data = ProductEntry.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")

@@ -1,23 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Butter & Batter</title>
+    <!-- Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <p>{{ nama }}</p>
-    <p>{{ kelas }}</p>
-    <h1>{{ tagline }}</h1>
-    <p>{{ description }}</p>
+<body class="bg-gray-100 p-4">
+    {% extends 'base.html' %}
+    {% block content %}
+    {% load humanize %}
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800">{{ tagline }}</h1>
+            <p class="text-gray-600">{{ description }}</p>
+        </header>
 
-    <h2>Our Delicious Offerings</h2>
-    <ul>
-        {% for item in food_items %}
-            <li>
-                <h3>{{ item.name }}</h3>
-                <p>{{ item.description }}</p>
-                <p> {{ item.price }}</p>
-            </li>
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4">Our Delicious Offerings</h2>
+        </section>
+
+        {% if not product_entries %}
+        <p>Belum ada data pastry pada Butter & Batter.</p>
+        {% else %}
+        <table>
+        <tr>
+            <th>Pastry Name</th>
+            <th>Price</th>
+            <th>Description</th>
+        </tr>
+
+        {% comment %} Berikut cara memperlihatkan data product pastry di bawah baris ini 
+        {% endcomment %} 
+        {% for product_entry in product_entries %}
+        <tr>
+            <td>{{product_entry.name}}</td>
+            <td>{{product_entry.price}}</td>
+            <td>{{product_entry.description}}</td>
+        </tr>
         {% endfor %}
-    </ul>
+        </table>
+        {% endif %}
+
+        <br />
+
+        <a href="{% url 'main:create_product_entry' %}">
+        <button>Add New Product Pastry Entry</button>
+        </a>
+        
+        <!-- Footer -->
+        <footer class="text-center">
+            <p class="text-gray-600">{{ nama }} | {{ kelas }}</p>
+        </footer>
+    </div>
+    {% endblock content%}
 </body>
 </html>
