@@ -113,7 +113,7 @@ Membuat input form untuk menambahkan objek model pada app sebelumnya.
 
 ## JSON
 ![alt text](JSON.jpg)
-![alt text](<JSON BY ID.jpg>)
+![alt text](<JSON 2.jpg>)
 
 ## XML by ID
 ![alt text](<XML BY ID.jpg>)
