@@ -100,10 +100,23 @@ Membuat input form untuk menambahkan objek model pada app sebelumnya.
     - URL Routing form input dengan menambahkan path URL ke dalam urlpatterns (urls.py)
     
 2. Tambahkan 4 fungsi views baru untuk melihat objek yang sudah ditambahkan dalam format XML, JSON, XML by ID, dan JSON by ID.
+    - Mengimport HttpResponse dan Serializer pada views.py
+    - Menambahkan 4 fungsi untuk view dengan format JSON dan XML di views.py (show_xml, show_json, show_xml_by_id, dan show_json_by_id)
 
-Mengimport HttpResponse dan Serializer pada views.py
-Menambahkan 4 fungsi untuk view dengan format JSON dan XML di views.py (show_xml, show_json, show_xml_by_id, dan show_json_by_id)
-Membuat routing URL untuk masing-masing views yang telah ditambahkan pada poin 2
+3. Membuat routing URL untuk masing-masing views yang telah ditambahkan pada poin 2
+    - Meng-import keempat fungsi view yang sudah dibuat pada poin 2 ke dalam urls.py.
+    - Menambahkan path URL masing-masing view ke dalam urlpatterns (urls.py)
 
-Meng-import keempat fungsi view yang sudah dibuat pada poin 2 ke dalam urls.py.
-Menambahkan path URL masing-masing view ke dalam urlpatterns (urls.py)
+
+## XML
+![alt text](XML.jpg)
+
+## JSON
+![alt text](JSON.jpg)
+![alt text](<JSON BY ID.jpg>)
+
+## XML by ID
+![alt text](<XML BY ID.jpg>)
+
+## JSON by ID
+![alt text](<JSON BY ID-1.jpg>)
