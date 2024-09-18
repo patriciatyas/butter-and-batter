@@ -5,6 +5,8 @@ PBP - A
 
 🍰 Need some daily dose of sweetness? [Click Here](http://patricia-herningtyas-butterandbatter.pbp.cs.ui.ac.id/)
 
+# TUGAS MANDIRI 2
+
 ## Cara Pengimplementasian Secara Step-by-Step 
 
 Pertama-tama, nyalakan virtual environment.
@@ -66,3 +68,42 @@ Django menggunakan arsitektur Model-View-Template (MVT) yang memfasilitasi pemis
 
 ## Mengapa model pada Django disebut sebagai ORM? 
 Model Django disebut sebagai ORM karena memungkinkan interaksi dengan database menggunakan bahasa Python, tanpa perlu menulis query SQL secara langsung. Django ORM secara otomatis mengubah model Python menjadi tabel database, sehingga memudahkan pengelolaan data dan mengurangi risiko kesalahan yang terjadi saat menulis query SQL secara manual.
+
+# TUGAS MANDIRI 3
+
+## Data delivery dalam pengimplementasian sebuah platform
+Data delivery mengoptimalkan performa platform dengan mengurangi waktu muat dan bandwidth, memungkinkan pengolahan data real-time, serta mendukung keamanan dan kontrol akses data melalui enkripsi dan autentikasi. Selain itu, data delivery juga memungkinkan platform untuk menangani pertumbuhan pengguna dan volume data.
+
+## XML vs JSON
+Menurut saya, JSON lebih baik dibandingkan XML karena lebih readable. Melalu pencaharian lebih lanjut, JSON ternyata memang lebih populer dibandingkan XML.
+- Parsing dan serialisasi JSON lebih cepat dan lebih efisien karena banyak bahasa pemrograman memiliki dukungan built-in atau library yang efisien untuk menangani JSON.
+- Sintaks JSON mirip dengan bahasa pemrograman modern dan formatnya hanya terdiri dari objek dan array sehingga lebih mudah dibaca. Sedangkan, sintaks XML lebih kompleks dengan tag pembuka dan penutup, atribut, dan hierarki yang lebih rumit.
+- Selain itu, format JSON merupakan subset dari objek JavaScript yang memudahkan pengolahan data JSON langsung dari browser. Jika menggunakam XML, dibutuhkan parsing tambahan (pembacaan dan interpretasi data)
+
+## Fungsi dari method is_Valid() pada form Django
+Untuk memeriksa apakah data yang diterima dari pengguna (misalnya, melalui form HTML) sesuai dengan aturan dan batasan yang telah ditetapkan dalam definisi form tersebut.
+
+## Fungsi csrf_token saat membuat form di Django
+Agar aplikasi web terlindungi dari serangan CSRF (Cross-Site Request Forgery) CSRF, kita harus menambahkan csrf_token. CSRF adalah jenis serangan di mana penyerang memanipulasi akses autentikasi pengguna untuk melakukan tindakan yang tidak diinginkan pada aplikasi web yang mereka akses.
+
+Token csrf_token dibuat oleh server dan dimasukkan ke dalam setiap form HTML. Saat seseorang melakukan permintaan POST atau tindakan yang mengubah data, token ini dikirim kembali ke server untuk memastikan bahwa permintaan tersebut berasal dari pengguna yang sah dan bukan dari penyerang.
+
+Penyerang dapat memanfaatkan kerentanan CSRF untuk membuat permintaan berbahaya kepada aplikasi web dengan menggunakan formulir atau skrip yang disembunyikan di situs web lain, dan jika pengguna yang sah sedang login, penyerang dapat membuat permintaan palsu yang memanfaatkan kredensial yang sudah ada pada aplikasi jika csrf_token tidak ditambahkan.
+
+## Step-by-step Pengimplementasian
+Membuat input form untuk menambahkan objek model pada app sebelumnya.
+
+1. Membuat form (forms.py) dengan model ProductEntry dengan field untuk menerima data Product baru
+    - Menambahkan fungsi create_product_entry(views.py) yang mengarahkan pengguna dari halaman utama ke halaman input kemudian memvalidasi, memproses, dan menyimpan input. Setelah input berhasil disimpan, pendapat akan diarahkan kembali ke halaman utama (redirect).
+    - Menambahkan product_entries = Product.objects.all() pada fungsi show_main (views.py) agar input yang berhasil diterima ditampilkan ketika pengguna diarahkan kembali ke halaman utama
+    - Membuat HTML baru (create_mood_entry.html) untuk menampilkan form input
+    - URL Routing form input dengan menambahkan path URL ke dalam urlpatterns (urls.py)
+    
+2. Tambahkan 4 fungsi views baru untuk melihat objek yang sudah ditambahkan dalam format XML, JSON, XML by ID, dan JSON by ID.
+
+Mengimport HttpResponse dan Serializer pada views.py
+Menambahkan 4 fungsi untuk view dengan format JSON dan XML di views.py (show_xml, show_json, show_xml_by_id, dan show_json_by_id)
+Membuat routing URL untuk masing-masing views yang telah ditambahkan pada poin 2
+
+Meng-import keempat fungsi view yang sudah dibuat pada poin 2 ke dalam urls.py.
+Menambahkan path URL masing-masing view ke dalam urlpatterns (urls.py)
