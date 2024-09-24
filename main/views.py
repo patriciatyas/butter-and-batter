@@ -12,17 +12,16 @@ import datetime
 
 @login_required(login_url='/login')
 def show_main(request):
-    product_entries = ProductEntry.objects.all() # mengambil seuluruh objek dari model ProductEntry yang tersimpan di database
-
+    product_entries = ProductEntry.objects.filter(user=request.user)
 
     context = {
-        'username': request.user.username,
-        'nama': "Patricia Herningtyas",
+        'nama': request.user.username,
         'kelas': "PBP-A",
         'tagline': "Your Daily Dose of Sweetness",
         'description': "Welcome to Butter & Batter — where every bite is a blissful journey of flavors.",
         'product_entries': product_entries,
         'last_login': request.COOKIES['last_login'],
+
     }
 
     return render(request, 'main.html', context)
@@ -32,15 +31,13 @@ def create_product_entry(request):
     form = ProductEntryForm(request.POST or None)
 
     if form.is_valid() and request.method == "POST":
-        mood_entry = form.save(commit=False)
-        mood_entry.user = request.user
-        mood_entry.save()
+        product_entry = form.save(commit=False)
+        product_entry.user = request.user
+        product_entry.save()
         return redirect('main:show_main')
 
     context = {
         'form': form,
-        'nama': "Patricia Herningtyas",
-        'kelas': "PBP-A",
     }
     return render(request, "create_product_entry.html", context)
 
