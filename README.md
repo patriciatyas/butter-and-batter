@@ -5,7 +5,7 @@ PBP - A
 
 🍰 Need some daily dose of sweetness? [Click Here](http://patricia-herningtyas-butterandbatter.pbp.cs.ui.ac.id/)
 
-# TUGAS MANDIRI 2
+# TUGAS INDIVIDU 2
 
 ## Cara Pengimplementasian Secara Step-by-Step 
 
@@ -69,7 +69,7 @@ Django menggunakan arsitektur Model-View-Template (MVT) yang memfasilitasi pemis
 ## Mengapa model pada Django disebut sebagai ORM? 
 Model Django disebut sebagai ORM karena memungkinkan interaksi dengan database menggunakan bahasa Python, tanpa perlu menulis query SQL secara langsung. Django ORM secara otomatis mengubah model Python menjadi tabel database, sehingga memudahkan pengelolaan data dan mengurangi risiko kesalahan yang terjadi saat menulis query SQL secara manual.
 
-# TUGAS MANDIRI 3
+# TUGAS INDIVIDU 3
 
 ## Data delivery dalam pengimplementasian sebuah platform
 Data delivery mengoptimalkan performa platform dengan mengurangi waktu muat dan bandwidth, memungkinkan pengolahan data real-time, serta mendukung keamanan dan kontrol akses data melalui enkripsi dan autentikasi. Selain itu, data delivery juga memungkinkan platform untuk menangani pertumbuhan pengguna dan volume data.
@@ -120,3 +120,84 @@ Membuat input form untuk menambahkan objek model pada app sebelumnya.
 
 ## JSON by ID
 ![alt text](<JSON BY ID-1.jpg>)
+
+# TUGAS INDIVIDU 4
+## Perbedaan antara `HttpResponseRedirect()` dan `redirect()`
+### `HttpResponseRedirect()` :
+Ini adalah kelas di Django yang digunakan untuk mengembalikan HTTP redirect response ke URL yang ditentukan. URL tujuan perlu dimasukkan secara manual, seperti `HttpResponseRedirect('/some-url/')`
+
+### `redirect()` :
+`redirect()` adalah shortcut function yang lebih mudah digunakan dibanding HttpResponseRedirect. Ini bisa menerima model, view, atau url sebagai argumen, dan akan secara otomatis menangani pembuatan URL untuk redirect (lebih fleksibel).
+
+## Cara Kerja Penghubungan Model `Product` dan `User`
+Penghubungan model Product dengan User dilakukan dengan menggunakan ForeignKey. Langkah-langkahnya adalah sebagai berikut:
+1. Membuat Model Product:
+    - Tambahkan ForeignKey ke model User dalam model Product untuk menunjukkan bahwa setiap produk memiliki pemilik (user).
+    - `user = models.ForeignKey(User, on_delete=models.CASCADE)`:
+        - Ini menghubungkan Product dengan User menggunakan ForeignKey.
+        - `on_delete=models.CASCADE` berarti ketika user dihapus, semua produk yang terkait dengan user tersebut juga akan dihapus.
+2. Mengubah fungsi `create_product_entry` pada `views.py`:
+    `product_entry = form.save(commit=False)`
+    `product_entry.user = request.user`
+    `product_entry.save()`
+    
+    Parameter commit=False yang digunakan pada potongan kode diatas berguna untuk mencegah Django agar tidak langsung menyimpan objek yang telah dibuat dari form langsung ke database.
+
+    Hal tersebut memungkinkan kita untuk memodifikasi terlebih dahulu objek tersebut sebelum disimpan ke database. Pada kasus ini, kita akan mengisi field user dengan objek User dari return value `request.user` yang sedang terotorisasi untuk menandakan bahwa objek tersebut dimiliki oleh pengguna yang sedang login.
+
+3. Mengubah product_entries dan context pada fungsi show_main:
+    `product_entries = ProductEntry.objects.filter(user=request.user)`
+    `context = {'name': request.user.username,...}`
+    
+    Kode tersebut berfungsi untuk menampilkan objek Product Entry yang terasosiasikan dengan pengguna yang sedang login. Hal tersebut dilakukan dengan menyaring seluruh objek dengan hanya mengambil Product Entry yang dimana field user terisi dengan objek User yang sama dengan pengguna yang sedang login.
+
+    Kode `request.user.username` berfungsi untuk menampilkan username pengguna yang login pada halaman main.
+
+4. Menyimpan semua perubahan dan melakukan migrasi model dengan `python manage.py migrations` dan `python manage.py migrate`
+
+5. Mempersiapkan aplikasi web untuk environment production dengan menambahkan sebuah import baru pada `settings.py` yang ada pada subdirektori `butter_and_batter`:
+    `import os`
+    
+    Kemudian mengganti variabel `DEBUG` dari berkas `settings.py`:
+    `PRODUCTION = os.getenv("PRODUCTION", False)`
+    `DEBUG = not PRODUCTION`
+
+6. Selesai! jalankan proyek Django dengan `python manage.py runserver` dan buka http://localhost:8000/
+
+## Perbedaan _authentication_ dan _authorization_, dan Implementasinya di Django
+*Authentication:*
+Proses untuk memverifikasi identitas pengguna. Ini biasanya melibatkan login dengan nama pengguna dan kata sandi.
+Di Django, ini diimplementasikan menggunakan sistem user dan password hashing yang aman. Proses otentikasi terjadi ketika pengguna memasukkan kredensial login.
+
+*Implementasi Authentication:*
+Menambahkan fungsi `login_user` dalam `views.py`:
+```
+def login_user(request):
+   if request.method == 'POST':
+      form = AuthenticationForm(data=request.POST)
+
+      if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('main:show_main')
+
+   else:
+      form = AuthenticationForm(request)
+   context = {'form': form}
+   return render(request, 'login.html', context)
+```
+`login(request, user)` berfungsi untuk melakukan login terlebih dahulu. Jika pengguna valid, fungsi ini akan membuat session untuk pengguna yang berhasil login.
+
+*Authorization:*
+Setelah pengguna terotentikasi, otorisasi menentukan apa yang boleh atau tidak boleh dilakukan oleh pengguna tersebut. Ini berkaitan dengan izin (permissions).
+
+## Cara Django Mengingat Pengguna yang Telah Login dan Pengguna Cookies
+
+
+
+
+
+
+
+
+
