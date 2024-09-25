@@ -192,6 +192,37 @@ def login_user(request):
 Setelah pengguna terotentikasi, otorisasi menentukan apa yang boleh atau tidak boleh dilakukan oleh pengguna tersebut. Ini berkaitan dengan izin (permissions).
 
 ## Cara Django Mengingat Pengguna yang Telah Login dan Pengguna Cookies
+Django menggunakan session ID dan cookies. Ketika login, session ID akan disimpan. Cookies dapat menyimpan preferensi pengguna, menyimpan data sementara, dan juga dapat melacak aktivitas pengguna di situs untuk keperluan analisis. Tidak semua cookies aman digunakan, ada kasus dimana cookies berisi informasi sensitif seperti password namun tidak dienkripsi sehingga cookies ini memiliki kemungkinan untuk bisa diakses melalui JavaScript oleh pihak ketiga.
+
+## Pengimplementasian Checklist Secara Step-by-Step
+1. Mengimplementasikan fungsi registrasi, login, dan logout.
+    - Membuat login html dan register html dengan form dan methodnya adalah post
+    - Membuat fungsi registrer di views.py yang memanggil UserCreationForm() dan menyimpan form yang akan pindah ke page login.
+    - Membuat fungsi user_login yang memanggil AuthenticationForm(data=request.POST) yang akan men-get user kemudian akan menyimpan cookie dan mengarahkan user ke front page
+    - Membuat fungsi logout_user untuk menghapus cookie sebelumnya dan mengarahkan ke page login.
+    - Mengimport semua fungsi views lalu membuat path untuk setiap fungsinya.
+
+2. Membuat dua akun pengguna dengan masing-masing tiga dummy data
+    - Melakukan registrasi 2 akun pada page register/ kemudian login dan menambahkan 3 data pada page create-product-entry/ untuk masing-masing akun tersebut.
+    ![alt text](nikizefanya.png)
+    ![alt text](taylorswift.png)
+
+3. Menghubungkan model Product dengan User
+    - Menambahkan kode `user = models.ForeignKey(User, on_delete=models.CASCADE)` dalam class Product di models.py (menggunakan ForeignKey)
+    - Melakukan migrasi model ke database dengan `python manage.py makemigrations` dan `python manage.py migrate`.
+
+4. Menampilkan detail informasi pengguna yang sedang logged in seperti username dan menerapkan cookies seperti last login pada halaman utama aplikasi.
+    - Memastikan pengguna sudah login sebelum bisa mengakses halaman utama dengan menambahkan login_required decorator di view yang menampilkan halaman utama.
+    - Mengambil data pengguna yang sedang login menggunakan `request.user`
+    - Setel cookie last login saat pengguna login, dan tampilkan di halaman utama `'last_login': request.COOKIES['last_login'],`
+
+5. Menjawab beberapa pertanyaan berikut pada README.md
+    - Memodifikasi README.md yang sudah dibuat sebelumnya
+
+
+
+
+
 
 
 
