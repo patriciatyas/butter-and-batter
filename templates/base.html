@@ -34,9 +34,9 @@
 
                 <!-- desktop view -->
                 <ul class="hidden md:flex items-center md:space-x-4 md:pr-3">
-                    <a href="/"><li>home</li></a>
-                    <a href="#"><li>about</li></a>
-                    <a href="/"><li>pastries</li></a>
+                    <a href="/" class="hover:text-red-900"><li>home</li></a>
+                    <a href="#" class="hover:text-red-900"><li>about</li></a>
+                    <a href="/" class="hover:text-red-900"><li>pastries</li></a>
                     {% if user.is_authenticated %}
                     <span class="text-yellow-900">hi, {{ user.username }}</span>
                     <a href="{% url 'main:logout' %}" class="text-center bg-red-900 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
@@ -56,9 +56,9 @@
         <div class="mobile-menu hidden md:hidden  px-4 w-full md:max-w-full">
             <div class="pt-2 pb-4 space-y-1">
                 <ul class="">
-                    <a href="/" class="hover:text-yellow-950"><li>home</li></a>
-                    <a href="#" class="hover:text-yellow-950"><li>about</li></a>
-                    <a href="/" class="hover:text-yellow-950"><li>pastries</li></a>
+                    <a href="/" class="hover:text-red-900"><li>home</li></a>
+                    <a href="#" class="hover:text-red-900"><li>about</li></a>
+                    <a href="/" class="hover:text-red-900"><li>pastries</li></a>
                 </ul>
                 {% if user.is_authenticated %}
                 <span class="block text-yellow-950 pt-1 pb-4">hi, {{ user.username }}</span>
@@ -88,12 +88,12 @@
     {% block content %} {% endblock content %}
     
 
-    <footer class="">
-        <div class="fixed border-t-2 bottom-0 px-4 justify-between w-full bottom-0  flex flex-row py-4 ">
+    <footer>
+        <div class="border-t-2 bottom-0 px-4 justify-between w-full bottom-0  flex flex-row py-4 ">
             <p>Patricia Herningtyas</p>
             <p>PBP A</p>
         </div>
-      </footer>
+    </footer>
 
   </body>
 

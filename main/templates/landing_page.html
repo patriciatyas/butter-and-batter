@@ -10,18 +10,18 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
 </head>
-<body class="bg-orange-50 font-poppins ">
+<body class="bg-orange-50 font-poppins">
     {% extends 'base.html' %}
     {% load static %}
     {% block content %}
 
     <!-- mobile view-->
-    <div class="flex flex-col items-center md:hidden">
+    <div class="flex flex-col items-center md:hidden min-h-screen">
         <h1 class="text-4xl font-extrabold pt-16 px-10 text-center text-yellow-950">Crafted with Love, Baked with Butter & Batter.</h1>
         <div class="pt-14 pb-14">
             <img src="{% static 'image/bakery.png' %}" alt="croissant" class="w-[300px]">
         </div>
-        <a href="/login" class="block">
+        <a href="{% url 'main:show_main' %}" class="block">
             <button class="bg-yellow-900 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-red-900 flex flex-row justify-center items-center w-full">
                 Order Now
                 <ion-icon name="arrow-forward-outline" class="text-xl pl-2"></ion-icon>
@@ -30,11 +30,11 @@
     </div>
 
     <!-- desktop view-->
-    <div class="hidden md:flex md:flex-row md:items-center md:pt-10 md:justify-center md:items-center">
+    <div class="hidden md:flex md:flex-row md:items-center md:justify-center md:items-center min-h-screen">
         <div class="flex-col ml-32 mr-12">
         <h1 class="text-4xl font-extrabold w-64 pt-10 pb-4 text-left text-yellow-950">Crafted with Love, Baked with Butter & Batter.</h1>
         <div class="bg-yellow-900 w-64 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-red-900 flex flex-row justify-center items-center">
-            <a href="{% url 'main:login' %}" class="">
+            <a href="{% url 'main:show_main' %}" class="">
                 Order Now
             </a>
             <ion-icon name="arrow-forward-outline" class="text-xl pl-2"></ion-icon>
