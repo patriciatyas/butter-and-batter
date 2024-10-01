@@ -221,15 +221,51 @@ Django menggunakan session ID dan cookies. Ketika login, session ID akan disimpa
 
 
 # TUGAS INDIVIDU 5
- ## Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+ ## Urutan Prioritas CSS Selector
+ 1. Inline Styles, CSS yang ditulis langsung di atribut elemen HTML menggunakan `style="..."` akan memiliki prioritas tertinggi.
+ 2. ID Selectors, Selector yang merujuk pada ID elemen (contoh: `#myId`) memiliki prioritas lebih tinggi daripada selector lainnya kecuali inline styles.
+ 3. Class, Pseudo-Class, Attribute Selectors, Selector yang merujuk pada class, pseudo-class (contoh: `:hover`), atau atribut (contoh: `[type="text"]`) memiliki prioritas di bawah ID selectors. Contoh: `.myClass`, `:hover`.
+ 4. Element and Pseudo-Element Selectors, Selector yang langsung merujuk pada elemen (contoh: `p`, `h1`) memiliki prioritas paling rendah.
+ 5. Specificity, Ketika ada dua atau lebih aturan yang berlaku, yang lebih spesifik akan diterapkan. Misalnya, `div p` lebih spesifik daripada `p` saja.
+ 6. Importance (`!important`), Deklarasi dengan `!important` mengalahkan semua aturan lain kecuali inline styles yang juga menggunakan `!important`.
+
  
- ## Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design!
+ ## Pentingnya Responsive Design dalam Pengembangan Aplikasi Web
+ Responisivitas penting karena pengguna saat ini mengakses aplikasi web melalui berbagai perangkat dengan resolusi dan ukuran layar yang berbeda.
  
- ## Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+ *Alasan Pentingnya:*
+ 1. Desain yang responsif memastikan pengguna dapat melihat dan menggunakan website dengan nyaman tanpa harus melakukan zoom in atau scroll horizontal.
+ 2. SEO (Search Engine Optimization): Google memberikan prioritas lebih tinggi pada website yang responsif di hasil pencarian mobile.
+ 3. Efisiensi Pengembangan: Daripada membuat versi terpisah untuk mobile dan desktop, responsive design memungkinkan satu website bekerja di berbagai perangkat.
+ >> Contoh:
+ >> Sudah Menerapkan: _Instagram_ – layout gambar dan teks menyesuaikan dengan baik di mobile dan desktop.
+ >> Belum Menerapkan: Beberapa situs pemerintahan lama – seringkali hanya dirancang untuk desktop, menyebabkan tampilan tidak nyaman di perangkat mobile.
+
  
- ## Jelaskan konsep flex box dan grid layout beserta kegunaannya!
  
- ## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+ ## Perbedaan Margin, Border, dan Padding serta Implementasinya
+ 1. Margin: Ruang di luar elemen, yang memisahkan elemen tersebut dengan elemen lain di sekitarnya. Margin bersifat transparan dan tidak memiliki warna.
+ 2. Border: Garis di sekitar elemen yang membatasi padding dan konten elemen tersebut. Border bisa diberi warna, ketebalan, dan gaya.
+ 3. Padding: Ruang di dalam elemen, antara konten elemen dan border. Padding mendorong konten menjauh dari border.
+ *Cara Implementasi:*
+ ```div {
+    margin: 20px;  /* Ruang di luar elemen */
+    border: 2px solid black;  /* Border hitam dengan ketebalan 2px */
+    padding: 15px;  /* Ruang di dalam elemen sebelum konten */
+    }
+```
+ 
+ ## Konsep Flexbox dan Grid Layout serta Kegunaannya
+ *Flexbox* adalah sistem tata letak satu dimensi yang digunakan untuk mengatur elemen dalam satu baris (row) atau satu kolom (column). Flexbox sangat berguna untuk tata letak yang responsif dan dinamis, seperti membuat elemen menjadi rata tengah, menyesuaikan ukuran elemen secara fleksibel, atau menyusun elemen dalam susunan yang berbeda.
+ *Grid Layout* adalah sistem tata letak dua dimensi yang memungkinkan kita untuk mengatur elemen dalam baris dan kolom. Grid cocok untuk membuat tata letak yang kompleks dengan lebih mudah, seperti pengaturan grid untuk dashboard atau halaman katalog produk. 
+
+
+ ## Implementasi Checklist Secara Step-by-Step:
+ - Menambahkan fungsi `edit_product` dan `delete_product` berdasarkan `id` ke dalam `views.py` lalu menambahkan path dari kedua fungsi tersebut ke dalam `urls.py`
+ - Mengostumisasi desain template HTML menggunakan Tailwind CSS untuk setiap page yang saya buat
+ - Menambahkan folder baru yaitu static/image untuk menyimpan gambar. Kemudian menambahkan image tersebut ke main.html untuk menampilkan gambar jika belum ada data product yang tersimpan.
+ - Menambahkan konfigurasi file static dengan cara menambahkan whitenoise.middleware.WhiteNoiseMiddleware ke middleware, lalu menambahkan STATICFILES_DIRS dan juga STATIC_ROOT.
+ - Membuat navbar yang responsive pada base.html di folder templates menggunakan Tailwind dan mengimplementasikan dropdown navbar untuk pengguna yang sedang login di handphone dengan penanganan interaksi menggunakan JavaScript, termasuk menampilkan dan menyembunyikan menu mobile.
 
 
 

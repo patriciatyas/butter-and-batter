@@ -23,7 +23,7 @@ def show_main(request):
         'tagline': "Your Daily Dose of Sweetness",
         'description': "Welcome to Butter & Batter — where every bite is a blissful journey of flavors.",
         'product_entries': product_entries,
-        # 'last_login': request.COOKIES['last_login'],
+        'last_login': request.COOKIES['last_login'],
 
     }
 

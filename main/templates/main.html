@@ -18,6 +18,7 @@
     {% extends 'base.html' %}
     {% block content %}
     {% load humanize %}
+    {% load static %}
     <div class="lg:max-w-4xl md:max-w-2xl max-w-lg bg-orange-200 p-8 rounded-lg shadow-lg mt-6 mb-8 mx-auto">
         <header class="text-center mb-8">
             <h1 class="font-poppins text-4xl font-bold text-yellow-950 mb-2">🧈{{ tagline }}🧈</h1>
@@ -25,10 +26,11 @@
         </header>
 
         <section class="mb-8">
-            <h2 class="text-2xl text-yellow-950 font-semibold mb-4 border-b-2 border-white pb-2">Our Delicious Offerings</h2>
+            <h2 class="text-2xl text-center md:text-left text-yellow-950 font-semibold mb-4 border-b-2 border-white pb-2">Our Delicious Offerings</h2>
         </section>
 
         {% if not product_entries %}
+        <img src="{% static 'image/croissant.png' %}" alt="Empty" class="mx-auto w-1/2">
         <p class="text-center text-zinc-600">Belum ada data pastry pada Butter & Batter.</p>
         {% else %}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
