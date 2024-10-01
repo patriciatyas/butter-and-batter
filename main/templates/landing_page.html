@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,11 +12,38 @@
 </head>
 <body class="bg-orange-50 font-poppins ">
     {% extends 'base.html' %}
+    {% load static %}
     {% block content %}
-    {% load humanize %}  
-    
-    
 
+    <!-- mobile view-->
+    <div class="flex flex-col items-center md:hidden">
+        <h1 class="text-4xl font-extrabold pt-16 px-10 text-center text-yellow-950">Crafted with Love, Baked with Butter & Batter.</h1>
+        <div class="pt-14 pb-14">
+            <img src="{% static 'image/bakery.png' %}" alt="croissant" class="w-[300px]">
+        </div>
+        <a href="/login" class="block">
+            <button class="bg-yellow-900 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-red-900 flex flex-row justify-center items-center w-full">
+                Order Now
+                <ion-icon name="arrow-forward-outline" class="text-xl pl-2"></ion-icon>
+            </button>
+        </a>
+    </div>
+
+    <!-- desktop view-->
+    <div class="hidden md:flex md:flex-row md:items-center md:pt-10 md:justify-center md:items-center">
+        <div class="flex-col ml-32 mr-12">
+        <h1 class="text-4xl font-extrabold w-64 pt-10 pb-4 text-left text-yellow-950">Crafted with Love, Baked with Butter & Batter.</h1>
+        <div class="bg-yellow-900 w-64 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-red-900 flex flex-row justify-center items-center">
+            <a href="{% url 'main:login' %}" class="">
+                Order Now
+            </a>
+            <ion-icon name="arrow-forward-outline" class="text-xl pl-2"></ion-icon>
+        </div>
+        </div>
+        <div class="pt-16 pb-14 pr-24">
+            <img src="{% static 'image/bakery.png' %}" alt="croissant" class="w-[510px]">
+        </div>
+    </div>
     {% endblock content %}
 </body>
 </html>
