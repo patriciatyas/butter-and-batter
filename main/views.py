@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect 
+from django.shortcuts import render, redirect, reverse
 from main.forms import ProductEntryForm
 from main.models import ProductEntry
 from django.http import HttpResponse, HttpResponseRedirect
@@ -10,6 +10,9 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 import datetime
 
+def landing_page(request):
+    return render(request, 'landing_page.html')
+
 @login_required(login_url='/login')
 def show_main(request):
     product_entries = ProductEntry.objects.filter(user=request.user)
@@ -20,7 +23,7 @@ def show_main(request):
         'tagline': "Your Daily Dose of Sweetness",
         'description': "Welcome to Butter & Batter — where every bite is a blissful journey of flavors.",
         'product_entries': product_entries,
-        'last_login': request.COOKIES['last_login'],
+        # 'last_login': request.COOKIES['last_login'],
 
     }
 
@@ -90,3 +93,22 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+def edit_product(request, id):
+    # Get the product entry
+    product = ProductEntry.objects.get(pk=id)
+
+    # Set product entry sebagai instance dari form
+    form = ProductEntryForm(request.POST or None, instance=product)
+
+    if form.is_valid() and request.method == "POST":
+        form.save() # simpan form dan kembali ke halaman awal
+        return HttpResponseRedirect(reverse('main:show_main'))
+    
+    context = {'form': form}
+    return render(request, "edit_product.html", context)
+
+def delete_product(request, id):
+    product = ProductEntry.objects.get(pk=id) # Get product berdasarkan id
+    product.delete() # hapus product
+    return HttpResponseRedirect(reverse('main:show_main'))

@@ -6,27 +6,92 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
         {% block meta %} {% endblock meta %}
+
+        <style>
+            body {
+                font-family: 'Poppins', sans-serif;
+            }
+        </style>
+
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     </head>
 
-    <nav class="border-gray-300 border-b">
-        <div class="max-w-6xl mx-auto py-4 px-6">
+    <nav class="border-gray-300 border-b font-poppins">
+        <div class="mx-auto py-4 px-4">
             <div class="flex justify-between">
                 <a href="/" class="flex items-center">
-                    Butter & Batter
+                    Butter&Batter
                 </a>
 
-                <ul class="flex items-center space-x-4">
-                    <a href="/"><li>Buy Pastries!</li></a>
-                    <a href="/"><li>About</li></a>
-                    <a href="create-product-entry"><li>Add Product Pastry</li></a>
+                <!-- hamburger -->
+                <div class="md:hidden justify-between">
+                    <ion-icon name="menu-outline" class="text-3xl cursor-pointer "></ion-icon>
+                </div>
+
+                <!-- desktop menu -->
+                <ul class="hidden md:flex items-center md:space-x-4">
+                    <a href="#"><li>about</li></a>
+                    <a href="/"><li>pastries</li></a>
+                    {% if user.is_authenticated %}
+                    <span class="text-yellow-900">hi, {{ user.username }}</span>
+                    <a href="{% url 'main:logout' %}" class="text-center bg-red-900 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                        logout
+                    </a>
+                    {% else %}
+                    <a href="{% url 'main:login' %}" class="">
+                      login
+                    </a>
+                    {% endif %}
                 </ul>
+
             </div>
         </div>
+
+        <!-- mobile menu -->
+        <div class="mobile-menu hidden md:hidden  px-4 w-full md:max-w-full">
+            <div class="pt-2 pb-4 space-y-1">
+                <ul class="">
+                    <a href="#" class="hover:text-yellow-950"><li>about</li></a>
+                    <a href="/" class="hover:text-yellow-950"><li>pastries</li></a>
+                </ul>
+                {% if user.is_authenticated %}
+                <span class="block text-yellow-950 pt-1 pb-4">hi, {{ user.username }}</span>
+                <a href="{% url 'main:logout' %}" class="block text-center bg-red-900 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                    Logout
+                </a>
+                {% else %}
+                <a href="{% url 'main:login' %}" class="hover:text-gray-500">
+                    login
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <script>
+            const menu = document.querySelector('.mobile-menu');
+            const hamburger = document.querySelector('ion-icon');
+
+            hamburger.addEventListener('click', () => {
+                hamburger.name = hamburger.name === 'menu-outline' ? 'close' : 'menu-outline';
+                menu.classList.toggle('hidden');
+            });
+          </script>
     </nav>
 
-  <body>
+  <body class="bg-orange-50">
     {% block content %} {% endblock content %}
     
+
+    <footer class="">
+        <div class="fixed bottom-0 px-4 justify-between w-full bottom-0  flex flex-row py-4 ">
+            <p>Patricia Herningtyas</p>
+            <p>PBP A</p>
+        </div>
+      </footer>
+
   </body>
+
 </html>
