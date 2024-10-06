@@ -29,30 +29,7 @@
             <h2 class="text-2xl text-center md:text-left text-yellow-950 font-semibold mb-4 border-b-2 border-white pb-2">Our Delicious Offerings</h2>
         </section>
 
-        {% if not product_entries %}
-        <img src="{% static 'image/croissant.png' %}" alt="Empty" class="mx-auto w-1/2">
-        <p class="text-center text-zinc-600">Belum ada data pastry pada Butter & Batter.</p>
-        {% else %}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for product_entry in product_entries %}
-            <div class="bg-orange-50 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                <h3 class="text-xl font-semibold text-yellow-950 mb-2">{{ product_entry.name }}</h3>
-                <p class="text-gray-600 mb-2">Price: ${{ product_entry.price|intcomma }}</p>
-                <p class="text-gray-500">{{ product_entry.description }}</p>
-                <div>
-                    <a href="{% url 'main:edit_product' product_entry.pk %}" class="bg-yellow-900  text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-950 inline-block mt-4">
-                        Edit
-                    </a>
-                </div>
-                <div>
-                    <a href="{% url 'main:delete_product' product_entry.pk %}" class="bg-red-900 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-red-950 inline-block mt-4">
-                        Delete
-                    </a>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
+        <div id="product_entry_cards"></div>
 
         <div class="text-center mt-6">
             <a href="{% url 'main:create_product_entry' %}">
@@ -65,5 +42,54 @@
     </div>        
 
     {% endblock content %}
+    <script>
+        // fungsi untuk mengambil data produk dari server lalu menampilkannya
+        async function getProductEntries() {
+            return fetch("{% url 'main:show_json' %}").then((res) => res.json())
+        }
+
+        async function refreshProductEntries() {
+            document.getElementById("product_entry_cards").innerHTML = "";
+            document.getElementById("product_entry_cards").className = "";
+            const productEntries = await getProductEntries();
+            let htmlString = "";
+            let classNameString = "";
+
+            if (productEntries.length === 0) {
+                classNameString="lg:max-w-4xl md:max-w-2xl max-w-lg bg-orange-200 p-8 rounded-lg shadow-lg mt-6 mb-8 mx-auto"
+                htmlString = `
+                <img src="{% static 'image/croissant.png' %}" alt="Empty" class="mx-auto w-1/2">
+                <p class="text-center text-zinc-600">Belum ada data pastry pada Butter & Batter.</p>
+                `;
+            }
+            else {
+                classNameString="bg-orange-50 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                productEntries.forEach((item) => {
+                    htmlString += `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="bg-orange-50 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                                <h3 class="text-xl font-semibold text-yellow-950 mb-2">${item.fields.name}</h3>
+                                <p class="text-gray-600 mb-2">Price: ${ item.fields.price|intcomma }</p>
+                                <p class="text-gray-500">${item.fields.description}</p>
+                                <div>
+                                    <a href="/edit-mood/${item.pk}" class="bg-yellow-900  text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-950 inline-block mt-4">
+                                        Edit
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="/delete/${item.pk}" class="bg-red-900 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-red-950 inline-block mt-4">
+                                        Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                })
+            }
+            document.getElementById("product_entry_cards").className = classNameString;
+            document.getElementById("product_entry_cards").innerHTML = htmlString;
+        }
+        refreshProductEntries();
+    </script>
 </body>
 </html>
