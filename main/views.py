@@ -124,7 +124,8 @@ def add_product_entry_ajax(request):
     user = request.user
 
     new_product = ProductEntry(
-        name=name, price=price,
+        name=name,
+        price=price,
         description=description,
         user=user
     )
