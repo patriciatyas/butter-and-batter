@@ -11,6 +11,7 @@ from django.urls import reverse
 import datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from django.utils.html import strip_tags
 
 def landing_page(request):
     return render(request, 'landing_page.html')
@@ -118,17 +119,14 @@ def delete_product(request, id):
 @csrf_exempt
 @require_POST
 def add_product_entry_ajax(request):
-    name = request.POST.get("name")
-    price = request.POST.get("price")
-    description = request.POST.get("description")
-    user = request.user
-
-    new_product = ProductEntry(
-        name=name,
-        price=price,
-        description=description,
-        user=user
-    )
-    new_product.save()
-
-    return HttpResponse("CREATED", status=201)
+    form = ProductEntryForm(request.POST)
+    
+    if form.is_valid():
+        product = form.save(commit=False)  # Save the product without committing yet
+        product.user = request.user  # Set the user manually
+        product.save()  # Now save it
+        return HttpResponse("CREATED", status=201)
+    else:
+        # Send back an error message with status 400
+        error_message = ', '.join([f"{field}: {error[0]}" for field, error in form.errors.items()])
+        return HttpResponse(f"Error: {error_message}", status=400)

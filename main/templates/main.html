@@ -1,3 +1,4 @@
+{% extends 'base.html' %} 
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,18 +12,13 @@
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"/>
-    <link rel="stylesheet" href="path/to/global.css">
-    <!-- <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-    </style> -->
+      {% block meta %}
+      <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
+     {% endblock meta %}
   </head>
   <body
     class="bg-orange-50 leading-normal tracking-normal font-poppins min-h-screen mx-4">
-    {% extends 'base.html' %}
     {% block content %}
-    {% load humanize %}
     {% load static %}
     <div class="lg:max-w-4xl md:max-w-2xl max-w-lg bg-orange-200 p-8 rounded-lg shadow-lg mt-6 mb-8 mx-auto">
       <header class="text-center mb-8">
@@ -51,8 +47,11 @@
         </div> -->
 
         
-          <button class="bg-yellow-900 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-red-950" onclick="showModal()">
+          <!-- <button class="bg-yellow-900 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-red-950" onclick="showModal()">
           Add New Pastry Entry
+          </button> -->
+          <button data-modal-target="crudModal" data-modal-toggle="crudModal" class="btn bg-yellow-900 hover:bg-red-950 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" onclick="showModal();">
+            Add New Product Entry by AJAX
           </button>
        
         </div>
@@ -74,9 +73,11 @@
               <!-- Modal body -->
               <div class="px-6 py-4 space-y-6 form-style">
                 <form id="productEntryForm">
+                  {% csrf_token %}
                   <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                     <input type="text" id="name" name="name" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-indigo-700" placeholder="Enter your Pastry" required>
+
                   </div>
                   <div class="mb-4">
                     <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
@@ -98,6 +99,32 @@
     
     </div>
     <script>
+      function addProductEntry() {
+        fetch("{% url 'main:add_product_entry_ajax' %}", {
+          method: "POST",
+          body: new FormData(document.querySelector('#productEntryForm')),
+        })
+        .then(response => {
+          if (response.ok) {
+            refreshProductEntries();
+            document.getElementById("productEntryForm").reset();
+            hideModal(); // Hide modal if successful
+          } else {
+            return response.text(); // Capture the error message
+          }
+        })
+        .then(errorMessage => {
+          if (errorMessage) {
+            alert(errorMessage); // Show error message to the user
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+
+        return false;
+      }
+
       // fungsi untuk mengambil data produk dari server lalu menampilkannya
       async function getProductEntries() {
         return fetch("{% url 'main:show_json' %}").then((res) => res.json())
@@ -118,14 +145,16 @@
         } else {
           classNameString ="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6";
           productEntries.forEach((item) => {
+            const name = DOMPurify.sanitize(item.fields.name);
+            const description = DOMPurify.sanitize(item.fields.description);
             htmlString += `
                         <div class="">
-                            <div class="bg-orange-50 p-4 rounded-lg shadow-md transition-shadow duration-300 mb-3 hover:hover-bounce-up">
-                                <h3 class="text-xl font-semibold text-yellow-950 mb-2">${item.fields.name}</h3>
+                            <div class="bg-orange-50 p-4 rounded-lg shadow-md transition-shadow duration-300 mb-3 hover:hover-bounce-up transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+                                <h3 class="text-xl font-semibold text-yellow-950 mb-2">${name}</h3>
                                 <p class="text-gray-600 mb-2">Price: ${item.fields.price}</p>
-                                <p class="text-gray-500">${item.fields.description}</p>
+                                <p class="text-gray-500">${description}</p>
                                 <div>
-                                    <a href="/edit-product/${item.pk}" class="bg-yellow-900  text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-950 inline-block mt-4">
+                                    <a href="/edit-product/${item.pk}" class="bg-yellow-900  text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-red-950 inline-block mt-4">
                                         Edit
                                     </a>
                                 </div>
@@ -172,6 +201,10 @@
 
   document.getElementById("cancelButton").addEventListener("click", hideModal);
   document.getElementById("closeModalBtn").addEventListener("click", hideModal);
+  document.getElementById("productEntryForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    addProductEntry();
+  })
     </script>
     {% endblock content %}
   </body>
