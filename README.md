@@ -96,7 +96,7 @@ Membuat input form untuk menambahkan objek model pada app sebelumnya.
 1. Membuat form (forms.py) dengan model ProductEntry dengan field untuk menerima data Product baru
     - Menambahkan fungsi create_product_entry(views.py) yang mengarahkan pengguna dari halaman utama ke halaman input kemudian memvalidasi, memproses, dan menyimpan input. Setelah input berhasil disimpan, pendapat akan diarahkan kembali ke halaman utama (redirect).
     - Menambahkan product_entries = Product.objects.all() pada fungsi show_main (views.py) agar input yang berhasil diterima ditampilkan ketika pengguna diarahkan kembali ke halaman utama
-    - Membuat HTML baru (create_mood_entry.html) untuk menampilkan form input
+    - Membuat HTML baru (create_product_entry.html) untuk menampilkan form input
     - URL Routing form input dengan menambahkan path URL ke dalam urlpatterns (urls.py)
     
 2. Tambahkan 4 fungsi views baru untuk melihat objek yang sudah ditambahkan dalam format XML, JSON, XML by ID, dan JSON by ID.
@@ -267,6 +267,82 @@ Django menggunakan session ID dan cookies. Ketika login, session ID akan disimpa
  - Menambahkan konfigurasi file static dengan cara menambahkan whitenoise.middleware.WhiteNoiseMiddleware ke middleware, lalu menambahkan STATICFILES_DIRS dan juga STATIC_ROOT.
  - Membuat navbar yang responsive pada base.html di folder templates menggunakan Tailwind dan mengimplementasikan dropdown navbar untuk pengguna yang sedang login di handphone dengan penanganan interaksi menggunakan JavaScript, termasuk menampilkan dan menyembunyikan menu mobile.
 
+ # TUGAS INDIVIDU 6
+ ## Manfaat dari Penggunaan JavaScript dalam Pengembangan Aplikasi Web!
+ Jika HTML digunakan untuk struktur dan konten dasar halaman web serta CSS digunakan untuk mengatur tampilan, tata letak elemen-element HTML, menambahkan gaya, warna, font, dan layout ke halaman web, JavaScript berperan untuk menambahkan interaktivitas dan fungsionalitas pada halaman web. Dengan menggunakan JavaScript, kita dapat membuat elemen yang responsif terhadap event yang dilakukan oleh pengguna, mengolah data, dan berkomunikasi dengan server.
+
+ ## Fungsi dari Penggunaan `await` Ketika Menggunakan `fetch()`
+ Keyword `await` berfungsi untuk menunggu respons yang dikembalikan oleh `fetch()` sebelum melanjutkan eksekusi kode berikutnya, memungkinkan pemanggilan data secara asinkron.
+
+Tanpa menggunakan `await`, kode akan terus berjalan tanpa menunggu respons dari `fetch()`. Hal ini berarti bagian kode yang bergantung pada hasil dari `fetch()` bisa dieksekusi sebelum respons tersedia, yang dapat menyebabkan error atau hasil yang tidak diharapkan.
+
+ ## Fungsi `csrf_exempt` pada view yang digunakan untuk AJAX `POST`
+ Saat melakukan permintaan AJAX POST, token CSRF umumnya disertakan dalam header sebagai bagian dari data formulir. Jika token CSRF tidak ada dalam permintaan AJAX, Django akan secara otomatis menolak permintaan itu sebagai bagian dari mekanisme keamanannya.
+
+Kita memerlukan decorator `csrf_exempt` karena pada fungsi `add_product_entry_ajax`, autentikasi sudah dilakukan dan kita yakin bahwa permintaan tersebut valid. Oleh karena itu, kita dapat memilih untuk tidak mengharuskan adanya token CSRF untuk operasi ini. Dekorator `@csrf_exempt` digunakan untuk menonaktifkan pemeriksaan token CSRF pada view tersebut.
+
+## Pembersihan Data Input pengguna di Backend
+Pembersihan data input pengguna juga sangat penting di sisi backend karena kita perlu memastikan bahwa semua data yang diterima dari pengguna telah diperiksa dan dibersihkan sebelum disimpan atau diproses lebih lanjut. Langkah ini membantu mencegah serangan seperti Cross-Site Scripting (XSS), yang dapat merusak data atau membahayakan pengguna. Dengan demikian, pembersihan di backend memberikan lapisan perlindungan tambahan untuk aplikasi kita.
+
+Selain itu, pembersihan data di backend juga memastikan konsistensi dalam penanganan data. Hal ini mengurangi kemungkinan terjadinya kesalahan yang dapat muncul jika hanya bergantung pada pembersihan di frontend, serta memastikan bahwa hanya data yang valid dan aman yang akan diproses oleh sistem.
+
+## Implementasi Checklist Secara Step-by-Step
+1. Mengubah kode `cards` data product agar dapat mendukung AJAX `GET`
+- Saya mengubah kode tampilan product card untuk memungkinkan data diambil secara asinkronus menggunakan AJAX. Dengan ini, data yang ditampilkan pada kartu akan berasal dari permintaan GET AJAX, bukan dari rendering server langsung.
+
+2. Melakukan pengambilan data product menggunakan AJAX `GET`. Memaastikan bahwa data yang diambil hanyalah data milik pengguna yang logged-in.
+- Membuat fungsi JavaScript untuk mengirim permintaan AJAX `GET` dan memfilter data sehingga hanya mengambil product yang dimiliki pengguna yang sedang login.
+```
+async function getProductEntries() {
+        return fetch("{% url 'main:show_json' %}").then((res) => res.json())
+      }
+```
+3. Membuat sebuah tombol yang membuka sebuah modal dengan form untuk menambahkan mood.
+- Membuat tombol dengan menambahkan kode `onclick="showModal();"`. Di dalam modal tersebut, akan tersedia form untuk input field.
+```
+<button data-modal-target="crudModal" data-modal-toggle="crudModal" class="btn bg-yellow-900 hover:bg-red-950 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" onclick="showModal();"> Add New Product Entry by AJAX </button>
+```
+4. Membuat fungsi view baru untuk menambahkan product baru ke dalam basis data.
+- Membuat fungsi `add_product_entry_ajax` yang sudah ada strip tag dengan method POST dan mereturn HttpResponse(status=201) jika berhasil.
+
+5. Membuat path /create-ajax/ yang mengarah ke fungsi view yang baru dibuat.
+- Saya menambahkan path `/create-product-entry-ajax/` di urls.py yang akan mengarahkan ke view untuk menambahkan product by AJAX
+
+6. Menghubungkan form yang telah kamu buat di dalam modal kamu ke path /create-ajax/.
+Menambahkan kode ke fungsi `addProductEntry()` di `main.html`
+```
+function addProductEntry() {
+    fetch("{% url 'main:add_product_entry_ajax' %}", {
+        method: "POST",
+        body: new FormData(document.querySelector('#productEntryForm')),
+    })
+
+```
+Selain itu, saya juga menambahkan error handling
+```
+.then(response => {
+    if (response.ok) {
+    refreshProductEntries();
+    document.getElementById("productEntryForm").reset();
+    hideModal(); // Hide modal if successful
+    } else {
+    return response.text(); // Capture the error message
+    }
+})
+.then(errorMessage => {
+    if (errorMessage) {
+    alert(errorMessage); // Show error message to the user
+    }
+})
+.catch(error => {
+    console.error("Error:", error);
+});
+
+return false;
+}
+```
+7. Melakukan refresh pada halaman utama secara asinkronus untuk menampilkan daftar mood terbaru tanpa reload halaman utama secara keseluruhan.
+- Membuat fungsi `refreshProductEntries()` untuk memperbarui halaman, lalu mengintegrasikan fungsi ini ke dalam fungsi `addProductEntry()`. Dengan cara ini, setiap kali tombol submit ditekan, produk baru akan ditambahkan dan halaman akan diperbarui secara asinkronus.
 
 
 
