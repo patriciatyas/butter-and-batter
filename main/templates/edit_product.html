@@ -3,9 +3,9 @@
 {% load static %}
 
 {% block content %}
-<div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-        <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Edit Menu</h1>
+<div class="min-h-screen flex items-center justify-center">
+    <div class="bg-orange-200 p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h1 class="text-3xl font-bold mb-6 text-center text-yellow-950">Edit Menu</h1>
 
         <form method="POST" class="space-y-6">
             {% csrf_token %}
@@ -16,7 +16,7 @@
             </div>
             
             <div class="flex justify-end">
-                <input type="submit" value="Edit Menu" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg cursor-pointer shadow-md focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"/>
+                <input type="submit" value="Edit Menu" class="bg-yellow-900 hover:bg-red-950 text-white font-bold py-2 px-4 rounded-lg cursor-pointer shadow-md focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"/>
             </div>
         </form>
     </div>
