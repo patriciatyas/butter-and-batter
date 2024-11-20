@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-4)y3rhcz@q4nptwn#*3e%lq(%3o_io0n%ucew4k=$bylosmi83
 PRODUCTION = os.getenv("PRODUCTION", False)
 DEBUG = not PRODUCTION 
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "patricia-herningtyas-butterandbatter.pbp.cs.ui.ac.id"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "patricia-herningtyas-butterandbatter.pbp.cs.ui.ac.id", "10.0.2.2"]
 
 
 # Application definition
@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'crispy_tailwind',
     'crispy_forms',
-    'main'
+    'main',
+    'authentication',
+    'corsheaders'
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
@@ -57,7 +59,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
 
 ROOT_URLCONF = 'butter_and_batter.urls'
 
